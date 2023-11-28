@@ -59,17 +59,19 @@ const MORSE_CODE: Record<string, string> = {
 
 export default function App() {
   const [text, setText] = useState('')
-
-  function handleTextInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setText(event.target.value)
-  }
+  const [isCaesar, setIsCaesar] = useState(false)
 
   function handleCodeChange(event: React.ChangeEvent<HTMLInputElement>) {
     const code = event.target.value
     console.log(`> code: `, code)
-    const translatedText = morseToAlphabet(code)
+
+    const translatedText = decodeMorse(code)
     console.log(`> translatedText: `, translatedText)
-    setText(translatedText)
+
+    const words = decodeCaesar(translatedText)
+    console.log(`> words: `, words)
+
+    // setText(words)
   }
 
   return (
@@ -85,37 +87,37 @@ export default function App() {
         </label>
         <label>
           Text
-          <input
-            type="textarea"
-            className="border"
-            value={text}
-            onChange={handleTextInputChange}
-          />
+          <input type="textarea" className="border" value={text} />
         </label>
       </div>
     </>
   )
 }
 
-function morseToAlphabet(code: string) {
-  if (code === '') return ''
+function decodeMorse(encodedString: string) {
+  return encodedString
+    .split(' ') // split the encodedString into array of encoded characters
+    .map((encodedCharacter) => {
+      // convert empty string to space character = space between words
+      if (encodedCharacter === '') return ' '
 
-  // split the code into array of code of each character
-  const characters = code.split(' ')
-  console.log(`> characters: `, characters)
+      // get object key from value
+      // Object.keys(obj).find(key => obj[key] === value)
+      return Object.keys(MORSE_CODE).find(
+        (key) => MORSE_CODE[key] === encodedCharacter,
+      )
+    })
+    .join('')
+}
 
-  // convert code into each alphabet character
-  const alphabets = characters.map((character) => {
-    // convert empty string to space character = space between words
-    if (character === '') return ' '
-
-    // get object key from value
-    // Object.keys(obj).find(key => obj[key] === value)
-    const alphabet = Object.keys(MORSE_CODE).find(
-      (key) => MORSE_CODE[key] === character,
-    )
-    return alphabet
-  })
-
-  return alphabets.join('')
+function decodeCaesar(caesarText: string) {
+  return caesarText
+    .split('') // split caesarText into array of each character
+    .map((caesarCharacter) => {
+      if (caesarCharacter === ' ') return ' '
+      // convert each caesarCharacter by the previous character
+      // string.fromCharCode() converts Unicode values to characters
+      return String.fromCharCode(caesarCharacter.charCodeAt(0) - 1)
+    })
+    .join('')
 }
