@@ -58,36 +58,47 @@ const MORSE_CODE: Record<string, string> = {
 }
 
 export default function App() {
-  const [text, setText] = useState('')
+  const [input, setInput] = useState('')
   const [isCaesar, setIsCaesar] = useState(false)
 
-  function handleCodeChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const code = event.target.value
-    console.log(`> code: `, code)
+  const decodedText = decodeMorse(input)
+  const resultText = isCaesar ? decodeCaesar(decodedText) : decodedText
 
-    const translatedText = decodeMorse(code)
-    console.log(`> translatedText: `, translatedText)
-
-    const words = decodeCaesar(translatedText)
-    console.log(`> words: `, words)
-
-    // setText(words)
+  function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setInput(event.target.value)
   }
 
   return (
     <>
       <div>
+        <label className="relative mb-5 inline-flex cursor-pointer items-center">
+          <input
+            className="peer sr-only"
+            type="checkbox"
+            onChange={() => setIsCaesar((prevIsCaesar) => !prevIsCaesar)}
+            checked={isCaesar}
+          />
+          <div className="peer h-5 w-9 rounded-full bg-gray-200 after:absolute after:start-[2px] after:top-[2px] after:h-4 after:w-4 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rtl:peer-checked:after:-translate-x-full dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-blue-800"></div>
+          <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+            Caesar Cipher
+          </span>
+        </label>
         <label>
           Code
           <input
             type="textarea"
             className="border"
-            onChange={handleCodeChange}
+            onChange={handleInputChange}
           />
         </label>
         <label>
           Text
-          <input type="textarea" className="border" value={text} />
+          <input
+            type="textarea"
+            className="border"
+            value={resultText}
+            readOnly
+          />
         </label>
       </div>
     </>
