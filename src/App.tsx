@@ -1,4 +1,5 @@
 import { ChangeEvent, useState } from 'react'
+import CheckBox from './modules/CheckBox.tsx'
 
 const MORSE_CODE: Record<string, string> = {
   A: '.-',
@@ -85,18 +86,12 @@ export default function App() {
           onChange={handleInputChange}
         />
 
-        <label className="relative mb-6 mt-2 inline-flex cursor-pointer items-center">
-          <input
-            className="peer sr-only"
-            type="checkbox"
-            onChange={() => setIsCaesar((prevIsCaesar) => !prevIsCaesar)}
-            checked={isCaesar}
-          />
-          <div className="peer h-5 w-9 rounded-full bg-gray-200 after:absolute after:start-[2px] after:top-[2px] after:h-4 after:w-4 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rtl:peer-checked:after:-translate-x-full dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-blue-800"></div>
-          <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-            Caesar Cipher
-          </span>
-        </label>
+        <CheckBox
+          className="mb-6 mt-2"
+          label="Caesar Cipher"
+          onChange={() => setIsCaesar((prevIsCaesar) => !prevIsCaesar)}
+          checked={isCaesar}
+        />
 
         <label
           htmlFor="message"
