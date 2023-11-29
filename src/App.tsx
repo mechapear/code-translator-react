@@ -118,3 +118,27 @@ function decodeCaesar(caesarText: string) {
     })
     .join('')
 }
+
+function encodeMorse(decodedString: string) {
+  return decodedString
+    .split('') // split the decodedString into array of decoded characters
+    .map((decodedCharacter) => {
+      // convert to '' for not tripple space between words when joining
+      if (decodedCharacter === ' ') return ''
+      // get object value from key
+      return MORSE_CODE[decodedCharacter]
+    })
+    .join(' ')
+}
+
+function encodeCaesar(decodedText: string) {
+  return decodedText
+    .split('') // split decodedText into array of each decoded character
+    .map((decodedCharacter) => {
+      if (decodedCharacter === ' ') return ' '
+      // convert to caesar character by replacing with the next character
+      // string.fromCharCode() converts Unicode values to characters
+      return String.fromCharCode(decodedCharacter.charCodeAt(0) + 1)
+    })
+    .join('')
+}
