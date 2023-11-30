@@ -5,6 +5,7 @@ import TranslatorBoard from './TranslatorBoard.tsx'
 export function MorseCodeEncoder() {
   const [input, setInput] = useState('')
   const [isCaesar, setIsCaesar] = useState(false)
+  const [isCopied, setIsCopied] = useState(false)
 
   const encodedText = isCaesar ? encodeCaesar(input) : input
   const resultEncodedText = encodeMorse(encodedText)
@@ -17,13 +18,34 @@ export function MorseCodeEncoder() {
     setIsCaesar((prevIsCaesar) => !prevIsCaesar)
   }
 
+  function handleCopyToClipboard() {
+    setIsCopied(true)
+    // writeText(string) property writes the specified text string to the system clipboard
+    navigator.clipboard.writeText(resultEncodedText).then(
+      () => {
+        console.log('copied:', resultEncodedText)
+      },
+      (error) => {
+        // clipboard write failed
+        console.error(error)
+      },
+    )
+    // reset isCopied to false after 1 second
+    setTimeout(() => {
+      setIsCopied(false)
+    }, 1000)
+  }
+
   return (
     <TranslatorBoard
       headerText="Encode Morse code"
+      placeholderText="Write your message here..."
       checkedValue={isCaesar}
       onInputChange={handleInputChange}
       onCheckBoxChange={handleCheckBoxChange}
       resultText={resultEncodedText}
+      onButtonClick={handleCopyToClipboard}
+      buttonText={isCopied ? 'copied' : 'copy'}
     />
   )
 }
