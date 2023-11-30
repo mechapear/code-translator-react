@@ -1,11 +1,11 @@
 import { CopyIcon } from './icon.tsx'
 
-export type ButtonProps = {
+export type CopyButtonProps = {
   onClick: () => void
   text: string
 }
 
-export default function Button({ onClick, text }: ButtonProps) {
+export default function CopyButton({ onClick, text }: CopyButtonProps) {
   return (
     <>
       <button

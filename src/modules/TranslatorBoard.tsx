@@ -1,6 +1,6 @@
 import { ChangeEventHandler } from 'react'
-import Button from './Button.tsx'
 import CheckBox from './CheckBox.tsx'
+import CopyButton from './CopyButton.tsx'
 import TextArea from './TextArea.tsx'
 
 export type TranslatorBoardProps = {
@@ -44,7 +44,7 @@ export default function TranslatorBoard({
       />
       <TextArea label="Result message" rows={4} value={resultText} disabled />
       <div className="my-1">
-        <Button text={buttonText} onClick={onButtonClick} />
+        <CopyButton text={buttonText} onClick={onButtonClick} />
       </div>
     </>
   )
