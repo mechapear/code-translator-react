@@ -10,7 +10,7 @@ export default function CopyButton({ onClick, text }: CopyButtonProps) {
     <>
       <button
         type="button"
-        className="inline-flex cursor-pointer items-center justify-center rounded text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+        className="inline-flex cursor-pointer items-center justify-center rounded text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
         onClick={onClick}
       >
         <CopyIcon />

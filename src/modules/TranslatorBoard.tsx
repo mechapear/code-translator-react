@@ -26,7 +26,7 @@ export default function TranslatorBoard({
 }: TranslatorBoardProps) {
   return (
     <>
-      <div className="my-6 text-center text-2xl font-semibold">
+      <div className="my-6 text-center text-2xl font-semibold text-slate-900 dark:text-slate-200">
         {headerText}
       </div>
       <TextArea
