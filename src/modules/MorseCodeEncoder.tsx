@@ -3,15 +3,15 @@ import { MORSE_CODE } from '../App.tsx'
 import TranslatorBoard from './TranslatorBoard.tsx'
 
 export function MorseCodeEncoder() {
-  const [input, setInput] = useState('')
+  const [inputValue, setInputValue] = useState('')
   const [isCaesar, setIsCaesar] = useState(false)
   const [isCopied, setIsCopied] = useState(false)
 
-  const encodedText = isCaesar ? encodeCaesar(input) : input
+  const encodedText = isCaesar ? encodeCaesar(inputValue) : inputValue
   const resultEncodedText = encodeMorse(encodedText)
 
   function handleInputChange(event: ChangeEvent<HTMLTextAreaElement>) {
-    setInput(event.target.value)
+    setInputValue(event.target.value.toUpperCase())
   }
 
   function handleCheckBoxChange() {
@@ -30,6 +30,7 @@ export function MorseCodeEncoder() {
         console.error(error)
       },
     )
+    // TODO: clear timeout before setting new timeout
     // reset isCopied to false after 1 second
     setTimeout(() => {
       setIsCopied(false)
@@ -40,6 +41,7 @@ export function MorseCodeEncoder() {
     <TranslatorBoard
       headerText="Encode Morse code"
       placeholderText="Write your message here..."
+      inputValue={inputValue}
       checkedValue={isCaesar}
       onInputChange={handleInputChange}
       onCheckBoxChange={handleCheckBoxChange}

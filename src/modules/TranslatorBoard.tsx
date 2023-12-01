@@ -6,6 +6,7 @@ import TextArea from './TextArea.tsx'
 export type TranslatorBoardProps = {
   headerText: string
   placeholderText: string
+  inputValue: string
   checkedValue: boolean
   onInputChange: ChangeEventHandler<HTMLTextAreaElement>
   onCheckBoxChange: () => void
@@ -17,6 +18,7 @@ export type TranslatorBoardProps = {
 export default function TranslatorBoard({
   headerText,
   placeholderText,
+  inputValue,
   checkedValue,
   onInputChange,
   onCheckBoxChange,
@@ -32,6 +34,7 @@ export default function TranslatorBoard({
       <TextArea
         label="Your message"
         rows={4}
+        value={inputValue}
         placeholder={placeholderText}
         // lets outside (App) access the entire event object
         onChange={onInputChange}
