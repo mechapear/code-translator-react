@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useRef, useState } from 'react'
 import { MORSE_CODE } from '../App.tsx'
 import TranslatorBoard from './TranslatorBoard.tsx'
 
@@ -6,6 +6,7 @@ export default function MorseCodeDecoder() {
   const [inputValue, setInputValue] = useState('')
   const [isCaesar, setIsCaesar] = useState(false)
   const [isCopied, setIsCopied] = useState(false)
+  const hasTimerRef = useRef<number | undefined>()
 
   const decodedText = decodeMorse(inputValue)
   const resultDecodedText = isCaesar ? decodeCaesar(decodedText) : decodedText
@@ -30,9 +31,11 @@ export default function MorseCodeDecoder() {
         console.error(error)
       },
     )
-    // TODO: clear timeout before setting new timeout
+    // clear timeout before setting new timeout
+    if (hasTimerRef.current) clearTimeout(hasTimerRef.current)
+
     // reset isCopied to false after 1 second
-    setTimeout(() => {
+    hasTimerRef.current = setTimeout(() => {
       setIsCopied(false)
     }, 1000)
   }
