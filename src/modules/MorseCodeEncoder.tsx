@@ -1,12 +1,12 @@
-import { ChangeEvent, useRef, useState } from 'react'
+import { ChangeEvent, useEffect, useMemo, useState } from 'react'
 import { MORSE_CODE } from '../App.tsx'
+import { debounce } from './debounce.ts'
 import TranslatorBoard from './TranslatorBoard.tsx'
 
 export function MorseCodeEncoder() {
   const [inputValue, setInputValue] = useState('')
   const [isCaesar, setIsCaesar] = useState(false)
   const [isCopied, setIsCopied] = useState(false)
-  const hasTimerRef = useRef<number | undefined>()
 
   const encodedText = isCaesar ? encodeCaesar(inputValue) : inputValue
   const resultEncodedText = encodeMorse(encodedText)
@@ -18,6 +18,10 @@ export function MorseCodeEncoder() {
   function handleCheckBoxChange() {
     setIsCaesar((prevIsCaesar) => !prevIsCaesar)
   }
+
+  // chace the debounced function so that it is not recreated on every render
+  // set isCopied after 1 second
+  const debouncedSetIsCopied = useMemo(() => debounce(setIsCopied, 1000), [])
 
   function handleCopyToClipboard() {
     setIsCopied(true)
@@ -31,15 +35,14 @@ export function MorseCodeEncoder() {
         console.error(error)
       },
     )
-
-    // clear timeout before setting new timeout
-    if (hasTimerRef.current) clearTimeout(hasTimerRef.current)
-
-    // reset isCopied to false after 1 second
-    hasTimerRef.current = setTimeout(() => {
-      setIsCopied(false)
-    }, 1000)
+    // set isCopied to false after 1 second
+    debouncedSetIsCopied(false)
   }
+
+  // clear timeout when debouncedSetIsCopied is changed & component is unmounted
+  useEffect(() => {
+    return () => debouncedSetIsCopied.cancel()
+  }, [debouncedSetIsCopied])
 
   return (
     <TranslatorBoard
